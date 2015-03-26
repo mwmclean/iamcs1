@@ -1,0 +1,27 @@
+<slide class="{{ slide.class }}" id="{{ slide.id }}" style="background:{{{ slide.bg }}};">
+  {{# slide.header }}
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2>{{{ slide.header}}}</h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class="navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+       </td>
+     </tr>
+   </table>
+ </hgroup>
+  {{/ slide.header }}
+  <article data-timings="{{ slide.dt }}">
+    {{{ slide.content }}}
+  </article>
+  <!-- Presenter Notes -->
+  {{# slide.pnotes }}
+  <aside class="note" id="{{ id }}">
+    <section>
+      {{{ html }}}
+    </section>
+  </aside>
+  {{/ slide.pnotes }}
+</slide>

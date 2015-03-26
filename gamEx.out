@@ -1,0 +1,8 @@
+sample.interval=20000
+".External" "terms.formula" "interpret.gam" "<Anonymous>" 
+".External" "rnorm" "eval" "eval" "model.frame.default" "model.frame" "eval" "eval" "<Anonymous>" 
+"eigen" "totalPenaltySpace" "estimate.gam" "<Anonymous>" 
+".C" "magic" "gam.fit" "estimate.gam" "<Anonymous>" 
+".C" "magic" "gam.fit" "estimate.gam" "<Anonymous>" 
+".C" "magic" "gam.fit" "estimate.gam" "<Anonymous>" 
+"eigen" "totalPenaltySpace" "estimate.gam" "<Anonymous>" 

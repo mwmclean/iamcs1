@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Authoring R Packages</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Authoring R Packages">
+  <meta name="author" content="Mathew McLean">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/custom.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Authoring R Packages</h1>
+    <h2>IAMCS Machine Learning and Applied Statistics Workshop Series</h2>
+    <h2>February 18, 2014</h2>
+    <div>
+    <p>Mathew McLean<br/>Research Assistant Professor<br/>Texas A &amp; M University<br/>http://stat.tamu.edu/~mmclean</p>
+
+  <aside class = "titleImg" id = "UniLogo">
+    <img src="assets/img/Tamulogo.png">
+  </aside>
+    </div>
+  </hgroup>
+      <a id="fsshortcut" href="javascript:void(0)" class="tshortcut" target="_self">
+       Full screen
+      </a>
+      <a id="printshortcut" href="javascript:void(0)" class="tshortcut" target="_self">
+       Print
+      </a>
+      <a id="dlshortcut" href="http://mwmclean.github.io/iamcs1/#1" class="tshortcut" target="_self">
+     Source
+    </a>
+
+  <article><button class = "navButton" onclick="window.slidedeck.nextSlide()" id="titleButton">&#8594;</button></article>
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="smallerSpacing" id="slide-1" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Functions</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>There are two types of functions
+
+<ol>
+<li>closures</li>
+<li>primitives</li>
+</ol></li>
+<li>Primitives are implemented in <code>C</code> and cannot be created by the user</li>
+<li>Closures can be created using the primitive function <code>function</code></li>
+</ul>
+
+<pre><code class="r">c(mode(`function`), typeof(`function`), mode(&quot;function&quot;))
+</code></pre>
+
+<pre><code>## [1] &quot;function&quot;  &quot;special&quot;   &quot;character&quot;
+</code></pre>
+
+<ul>
+<li>A closure has three parts
+
+<ol>
+<li>formal arguments: variables passed to the function for it to use</li>
+<li>body: an R expression, or several expressions enclosed in <code>{ }</code></li>
+<li>environment - current environment when function is created (more on this later)</li>
+</ol></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Extracting the Parts of a Closure</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">FunParts &lt;- function(fun.name){
+  return(list(formals(fun.name), body(fun.name), environment(fun.name)))
+}
+FunParts(ncol)
+</code></pre>
+
+<pre><code>## [[1]]
+## [[1]]$x
+## 
+## 
+## 
+## [[2]]
+## dim(x)[2L]
+## 
+## [[3]]
+## &lt;environment: namespace:base&gt;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Dot-dot-dot</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><code>...</code> is a special object type in <code>R</code> used to passed extra arguments to a function</li>
+<li>Arguments that don&#39;t match any formal arguments of a function are matched with <code>...</code></li>
+<li>Arguments matched to <code>...</code> can be extracted using <code>list(...)</code>
+
+<ul>
+<li>can also use <code>c(...)</code> or <code>as.list(...)</code></li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Partial matching of Argument Names</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Full names of arguments need not always be specified when calling a function
+
+<ul>
+<li>True for extraction (<code>$</code>), and attributes (<code>attr</code>) as well</li>
+</ul></li>
+<li>Note: partial argument matching occurs before <code>...</code>, but not after it</li>
+</ul>
+
+<pre><code class="r">DemoPartialMatch &lt;- function(first.arg, ..., second.arg){c(...)}
+DemoPartialMatch(fir = 1, sec = 2)
+</code></pre>
+
+<pre><code>## sec 
+##   2
+</code></pre>
+
+<ul>
+<li><strong>Bad practise</strong>, leads to bugs, <strong><em>don&#39;t</em> use partial matching</strong></li>
+<li>R has global options which can be set to warn about this</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Useful Functions for Working with Arguments</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Use <code>missing(x)</code> to check if the argument <code>x</code> is specified in the call to a function</li>
+<li>Use <code>hasArg(x)</code> to check for argument <code>x</code> is in <code>...</code> or in formal arguments</li>
+</ul>
+
+<pre><code class="r">TestingMissing &lt;- function(x, ...){
+  print(c(hasArg(x), hasArg(y), missing(x)))
+  missing(y)
+  invisible(x)
+}
+TestingMissing(y = 1)
+</code></pre>
+
+<pre><code>## [1] FALSE  TRUE  TRUE
+</code></pre>
+
+<pre><code>## Error in missing(y): &#39;missing&#39; can only be used for arguments
+</code></pre>
+
+<ul>
+<li>Alternative: <code>function(x = NULL){ is.null(x) ...</code></li>
+<li>Note: the use of <code>invisible</code> prevents <code>x</code> from being printed if no assignment occurs</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Checking Arguments</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We need to make sure the arguments are in the form we expect</li>
+<li>errors, warnings, and messages should be issued as necessary
+
+<ul>
+<li>messages should be <em>meaningful</em> for the user</li>
+</ul></li>
+</ul>
+
+<p>Some useful functions include</p>
+
+<ul>
+<li><code>is.na</code>, <code>is.null</code>, <code>is.numeric</code>, etc. for checking type</li>
+<li><code>all</code>, <code>any</code>, e.g. <code>any(is.na(x))</code></li>
+<li>use <code>inherits</code> to check the class of an object</li>
+<li><code>identical</code> <strong>is the proper way to check equality</strong> in <code>if</code> and <code>while</code> statements
+
+<ul>
+<li>consider <code>x == y</code> when <code>x</code> or <code>y</code> does not have length one or are <code>NA</code> or <code>NULL</code></li>
+<li>all.equal is for <em>near</em> equality; though <code>isTRUE(all.equal(...))</code> is fine too</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Handling Errors</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><code>try</code> - wrapper to safely run an expression that may fail</li>
+</ul>
+
+<pre><code class="r">result &lt;- try(FooFun(x), silent = TRUE)  # silent = TRUE means error message suppressed
+if (inherits(result, &quot;try-error&quot;))
+  result &lt;- NA
+</code></pre>
+
+<ul>
+<li>Equivalent alternative:</li>
+</ul>
+
+<pre><code class="r">result &lt;- tryCatch(FooFun(x), error = function(e) return(NA))
+</code></pre>
+
+<ul>
+<li>Try <code>demo(error.catching)</code> in <code>R</code> and see <a href="http://stat.ethz.ch/R-manual/R-devel/library/base/html/conditions.html">?conditions</a></li>
+<li>if messages can be ignored when function is called by your code, use <code>suppressMessages</code>
+
+<ul>
+<li><code>suppressWarnings</code> for suppressing warnings</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="smallerSpacing" id="slide-8" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Working with Calls</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>a <code>call</code> is one of three language objects in <code>R</code> (the others are <code>expression</code>s and <code>name</code>s)</li>
+<li>We may use <code>match.call()</code> inside a function to capture the original call</li>
+<li>This is useful for example:
+
+<ul>
+<li>to modify the contents of a call and pass them on to another function ; see e.g. <code>lm</code></li>
+<li>to save the call for later use (e.g. returning it as part of a list)</li>
+</ul></li>
+</ul>
+
+<pre><code class="r">GetCallParts &lt;- function(x, ...){
+  .call &lt;- match.call(expand.dots = TRUE)
+  return(list(.call[[1]], .call$z))
+}
+GetCallParts(x, y = 1, z = 2)
+</code></pre>
+
+<pre><code>## [[1]]
+## GetCallParts
+## 
+## [[2]]
+## [1] 2
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Working with Calls</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can use <code>do.call</code> to call a function by name and argument list (example coming later)</li>
+<li>We can evaluate calls using <code>eval</code></li>
+</ul>
+
+<pre><code class="r">StupidSum &lt;- function(x, ...){
+  .call &lt;- match.call(expand.dots = TRUE)
+  .call$x &lt;- NULL
+  .call$na.rm &lt;- TRUE
+  .call[[1L]] &lt;- as.name(&quot;sum&quot;)
+  return(eval(.call))
+}
+StupidSum(x = &quot;hi&quot;, y = 1, z = 2, z2 = NA)
+</code></pre>
+
+<pre><code>## [1] 3
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="smallerSpacing" id="slide-10" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Functions are First Class Objects</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <p>Functions may be</p>
+
+<ul>
+<li>assigned to variables and stored in data structures</li>
+<li>used as arguments to other functions</li>
+<li>returned by other functions</li>
+<li>anonymous (not bound to a variable)</li>
+</ul>
+
+<p>Example: Change error distribution used to simulate complicated model</p>
+
+<pre><code class="r">GetErrorDist &lt;- function(err.fun.name, ...){
+  err.fun.name &lt;- match.fun(err.fun.name)
+  return(function(n) do.call(err.fun.name, list(n, ...)))
+}
+ErrorDist &lt;- GetErrorDist(&quot;rnorm&quot;, sd = 3, mean = 10)
+## data &lt;- SimulateModel(n = 100, ErrorDist, other.args)
+ErrorDist &lt;- GetErrorDist(&quot;rt&quot;, df = 2); ErrorDist(3)
+</code></pre>
+
+<pre><code>## [1] -0.01098557  0.58717775  3.81613738
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="biggerSpacing" id="slide-11" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Scope, Environments, and Frames</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Assignment (e.g. <code>x &lt;- 1</code>) and function calls (e. g. f(x = 1)) <em>bind</em> values to variables</li>
+<li>A <em>frame</em> is a set of bindings (collection of objects)</li>
+<li>A variable is allowed only one binding per frame
+
+<ul>
+<li>Can have different bindings in different frames</li>
+</ul></li>
+<li>A free variable in a particular frame is one that is unbound (has no assigned value)</li>
+<li>Scoping rules determine where <code>R</code> looks for values for free variables</li>
+<li>An environment is made up of a frame and a pointer to an enclosing environment</li>
+<li>The scope of a binding is the set of environments in which it is visible</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="biggerSpacing" id="slide-12" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Environments and Function Calls</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Recall, a function has three parts: arguments, a body, and an enclosing environment
+
+<ul>
+<li>The function&#39;s enclosing environment is the one it was <strong>created</strong> in</li>
+</ul></li>
+<li>When a function is called, the following occurs
+
+<ol>
+<li>Args. in the call are matched to the formal args of the function definition</li>
+<li>A <strong>new</strong> environment is created and assignments are made to it for each formal arg.
+
+<ul>
+<li>The function&#39;s environment becomes the enclosing environment for this one</li>
+</ul></li>
+<li>The body of the function is evaluated in this new env. and result is returned</li>
+</ol></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="biggerSpacing" id="slide-13" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Environments and Frames</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>User&#39;s workspace is <code>R_GlobalEnv</code>, which is bound to <code>.GlobalEnv</code></li>
+<li><code>search()</code> gives a list of all attached packages - &quot;the search path&quot;
+
+<ul>
+<li>i.e. all env. where <code>R</code> will look for bindings (including <code>.GlobalEnv</code>)</li>
+</ul></li>
+<li>When a package is attached, its environment becomes the enclosing env. of R_GlobalEnv</li>
+<li><code>x &lt;&lt;- 1</code> will bind value <code>1</code> to first instance of a variable <code>x</code> in the search path
+
+<ul>
+<li>or create a binding for <code>x</code> in <code>R_GlobalEnv</code> if no existing binding is found</li>
+</ul></li>
+<li>Craziness: Functions <code>parent.frame</code> and <code>parent.env</code> are <em>very</em> different
+
+<ul>
+<li><code>parent.frame(1)</code> gives the environment of the calling function - used frequently</li>
+<li><code>parent.env</code> gives the enclosing environment of its argument - rarely of <em>direct</em> use</li>
+</ul></li>
+<li>Also see <code>?with</code> and <code>?local</code></li>
+<li>Two nice references on frames, environments and scope in <code>R</code> <a href="http://obeautifulcode.com/R/How-R-Searches-And-Finds-Stuff">here</a> and <a href="http://cran.r-project.org/doc/contrib/Fox-Companion/appendix-scope.pdf">here</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="smallerSpacing" id="slide-14" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Lexical Scoping Example</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Every closure is associated with a enclosing environment (the one it was <em>defined</em> in)</li>
+</ul>
+
+<pre><code class="r">Fun1 &lt;- function(x){
+  y &lt;- 1
+  H(x)
+}
+Fun2 &lt;- function(x){
+  y &lt;- 1
+  G &lt;- function(z) z + y
+  G(x)
+}
+H &lt;- function(z) z + y
+y &lt;- 0; x &lt;- 100
+c(Fun1(1), Fun2(1))  # Because of local bindings for x in both Fun.&#39;s, x in .GlobalEnv is ignored
+</code></pre>
+
+<pre><code>## [1] 1 2
+</code></pre>
+
+<ul>
+<li>Since <code>H</code> is <strong>defined</strong> in <code>.GlobalEnv</code>, <code>H</code> uses <code>y</code> in <code>.GlobalEnv</code> -- this is lexical scoping</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Working with Environments</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">env &lt;- new.env(); env  # create and print a new environment
+</code></pre>
+
+<pre><code>## &lt;environment: 0x00000000183b5ea0&gt;
+</code></pre>
+
+<pre><code class="r">env$x &lt;- 1; as.list(env)  # add object x to env and view its contents
+</code></pre>
+
+<pre><code>## $x
+## [1] 1
+</code></pre>
+
+<pre><code class="r">env$f &lt;- function(x, env){
+  assign(&quot;x&quot;, x, envir = env);
+  return(environment(NULL)) # return the current evaluation environment
+}
+ls(envir = env)  # list objects in env
+</code></pre>
+
+<pre><code>## [1] &quot;f&quot; &quot;x&quot;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-16" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Working with Environments</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">env$f(100, env)  # assign 100 to x in env
+</code></pre>
+
+<pre><code>## &lt;environment: 0x000000000e1f20c0&gt;
+</code></pre>
+
+<pre><code class="r">get(&quot;x&quot;, env)  # retrieve value of x in env              ## 100
+</code></pre>
+
+<pre><code class="r">env$f(10, parent.env(env))  # assign 10 to x in env&#39;s parent environment: R_GlobalEnv
+</code></pre>
+
+<pre><code>## &lt;environment: 0x000000000db730c0&gt;
+</code></pre>
+
+<pre><code class="r">x                                                        ## 10
+</code></pre>
+
+<pre><code class="r">f &lt;- function(n) parent.frame(n);
+identical(f(1), eval(f(2), envir = new.env()))           ## TRUE  # R_GlobalEnv
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="smallerSpacing" id="slide-17" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Package Environments</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>A loaded package, <code>pkgname</code>, has three environments associated with it
+
+<ol>
+<li>&quot;package:pkgname&quot; - all exported objects (really pointers to the objects);
+
+<ul>
+<li>returned by <code>search()</code></li>
+</ul></li>
+<li>&quot;namespace:pkgname&quot; - all objects (pointers), including internal ones</li>
+<li>&quot;imports:pkgname&quot; - objects from other packages required by <code>pkgname</code></li>
+</ol></li>
+<li>These are locked: trying to add or remove bindings in them causes <code>error</code>; see <a href="http://astrostatistics.psu.edu/su07/R/library/base/html/bindenv.html"><code>?bindenv</code></a></li>
+</ul>
+
+<pre><code class="r"># Function for viewing the environments associated with an attached package
+GetPkgEnvirons &lt;- function(pkgname){
+ ns &lt;- getNamespace(pkgname)
+ return(list(package = as.environment(paste0(&quot;package:&quot;, pkgname)),
+   namespace = ns, imports = parent.env(ns)))
+}
+sapply(GetPkgEnvirons(&quot;stats&quot;), environmentIsLocked)
+</code></pre>
+
+<pre><code>##   package namespace   imports 
+##      TRUE      TRUE      TRUE
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="smallerSpacing" id="slide-18" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Viewing Source code</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>source code can be viewed by typing the function name at the console</p>
+
+<ul>
+<li>only works if function is exported by namespace on the search path</li>
+<li>sometimes backticks (`) are necessary</li>
+</ul>
+
+<pre><code>`::`
+</code></pre>
+
+<pre><code>## function (pkg, name) 
+## {
+##     pkg &lt;- as.character(substitute(pkg))
+##     name &lt;- as.character(substitute(name))
+##     getExportedValue(pkg, name)
+## }
+## &lt;bytecode: 0x000000000b607278&gt;
+## &lt;environment: namespace:base&gt;
+</code></pre></li>
+<li><p><code>::</code> - function for viewing <em>exported</em> objects from a namespace, e.g. <code>pkgname::FunName</code></p></li>
+<li><p><code>:::</code> - function for viewing <em>internal</em> objects in a namespace</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="largerSpacing" id="slide-19" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Viewing the sources</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>My favourite R function: <code>getAnywhere()</code>
+
+<ul>
+<li>access any internal or external function on the search path</li>
+<li>no need to specify package</li>
+<li>who has time to read the help files? Learn by example!</li>
+</ul></li>
+<li>Download source package (the .tar.gz one) view files in src (for C code)</li>
+<li>Note: <code>:::</code> should not be used in production code;
+
+<ul>
+<li>function is not exported for a reason, package author could change it without notice</li>
+</ul></li>
+<li>Source code for <a href="https://svn.r-project.org/R/trunk/">R-devel  </a></li>
+<li>U. Ligges on accessing source code: <a href="http://cran.r-project.org/doc/Rnews/Rnews_2006-4.pdf">Rnews 6.4, pp. 43-45</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="largerSpacing" id="slide-20" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Classes and Methods</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><em>Classes</em> provide a template for the creation of objects</li>
+<li><em>Methods</em> are the special functions of a class that work on the class&#39;s objects</li>
+<li>Classes in <code>R</code> can inherit features from multiple other classes</li>
+<li>Classes simplify code, making it easier to use, and reuse</li>
+<li><code>S3</code> is <code>R</code>&#39;s oldest, simplest, and most used way to implement OOP
+
+<ul>
+<li>Uses generic functions, special functions that usually only call <code>UseMethod</code></li>
+<li>Create a new generic: <code>MyGeneric &lt;- function(x, ...) UseMethod(&quot;MyGeneric&quot;)</code></li>
+</ul></li>
+<li><code>S4</code> is newer, more elegant, and has many more features</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Defining <code>S3</code> Classes and Methods</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><code>S3</code> classes do not require a formal definition
+
+<ul>
+<li>simply change the <code>class</code> attribute of an object</li>
+<li>e.g. <code>class(x) &lt;- &quot;MyClass&quot;</code> or `class(x) &lt;- c(&quot;MyClass&quot;, &quot;data.frame&quot;)</li>
+</ul></li>
+<li>We can define a new method for <code>MyGeneric</code> as follows</li>
+</ul>
+
+<pre><code class="r">MyGeneric.MyClass &lt;- function(x, ...){  # note the matching signature
+  ...  # some expressions
+}
+y &lt;- structure(list(a = 1, b = 2), class = &quot;MyClass&quot;)  # create instance of MyClass
+MyGeneric(y)  # no need to say MyGeneric.MyClass(y)
+</code></pre>
+
+<ul>
+<li><code>UseMethod</code> decides which method to dispatch based on the first argument of the generic</li>
+<li>Use <code>methods(print)</code> to list all the methods defined for the generic <code>print</code>
+
+<ul>
+<li>or <code>methods(class = &quot;Date&quot;)</code> to list all methods defined for class <code>Date</code></li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-22" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>S4 Classes</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(fortunes); fortune(121)
+</code></pre>
+
+<pre><code>## 
+## Sean Davis: It got me going quickly with S4 methods, which it seems to me
+## are the way to go in most cases.
+## Rolf Turner: If you want to simultaneously handcuff yourself, strap
+## yourself into a strait jacket, and tie yourself in knots, and moreover
+## write code which is incomprehensible to the human mind, then S4 methods
+## are indeed the way to go.
+##    -- Sean Davis and Rolf Turner (expressing different views about the
+##       benefits of S4 classes)
+##       R-help (May 2005)
+</code></pre>
+
+<ul>
+<li>H. Wickham on object oriented programming in <code>R</code>: <a href="http://adv-r.had.co.nz/OO-essentials.html">intro</a> and <a href="http://vita.had.co.nz/papers/mutatr.pdf">more advanced</a></li>
+<li><a href="https://stat.ethz.ch/R-manual/R-devel/library/methods/html/refClass.html"><code>?setRefClass</code></a> for creating references classes - methods belong to obj., obj. are mutable</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-23" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Debugging</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>My second favourite <code>R</code> function: <code>browser</code>
+
+<ul>
+<li>stops execution and allows for inspection of current environment when called</li>
+</ul></li>
+<li><code>debug(Foo)</code>: calls <code>browser</code> as soon as <code>Foo</code> is entered
+
+<ul>
+<li>can then step through function line by line</li>
+</ul></li>
+<li><code>recover</code> allows for browsing in any active function call</li>
+<li><code>trace</code>: allows for insertion of arbitrary debugging code at chosen points in a function
+
+<ul>
+<li><code>trace(Foo, edit = TRUE)</code> opens editor with copy of <code>Foo</code>&#39;s code when <code>Foo</code> is called
+
+<ul>
+<li>changes made in the editor are then used when executed <code>Foo</code></li>
+</ul></li>
+<li>e.g. <code>trace(Foo, browser, exit = browser)</code> calls browser on entry <code>and</code> exit of <code>Foo</code></li>
+<li>to insert code at certain steps, see the <code>at</code> argument and the examples at <code>?trace</code></li>
+<li>Use <code>untrace(Foo)</code> to stop tracing <code>Foo</code></li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-24" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Debugging</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>When developing package, you may find the following options useful:</p>
+
+<ul>
+<li><code>options(error = utils::recover)</code>
+
+<ul>
+<li>post-mordem debugging of errors when they occur</li>
+</ul></li>
+<li><code>options(error = function() traceback(2))</code>
+
+<ul>
+<li>print call stack automatically on error</li>
+</ul></li>
+<li><code>options(showWarnCalls = TRUE, showErrorCalls = TRUE)</code>
+
+<ul>
+<li>Call stack is printed when a warning or error occurs</li>
+</ul></li>
+<li><code>options(warn = 2)</code>
+
+<ul>
+<li>all warnings are treated as errors</li>
+</ul></li>
+<li><code>options(prompt = &quot;Howdy! &quot;)</code></li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-25" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Profiling</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>For determining which parts of code are slowest and use the most memory</li>
+</ul>
+
+<pre><code class="r">library(mgcv, quietly = TRUE)
+X &lt;- matrix(rnorm(5e5), 1e3, 5e2); y  &lt;- rowSums(X) + rt(1e3, df = 1)
+Rprof(&quot;mcgvEx.out&quot;)
+invisible(gam(y ~ te(X[, 1], X[, 2]) + X[, c(-1, -2)]))
+Rprof(NULL)  # turn off profiling
+summaryRprof(&quot;mcgvEx.out&quot;)
+</code></pre>
+
+<pre><code>## $by.self
+##                      self.time self.pct total.time total.pct
+## &quot;.C&quot;                     14.08    97.10      14.08     97.10
+## &quot;%*%&quot;                     0.16     1.10       0.16      1.10
+## &quot;eigen&quot;                   0.08     0.55       0.08      0.55
+## &quot;crossprod&quot;               0.04     0.28       0.04      0.28
+## &quot;sort.int&quot;                0.04     0.28       0.04      0.28
+## &quot;gam.fit&quot;                 0.02     0.14      14.32     98.76
+## &quot;quantile.default&quot;        0.02     0.14       0.06      0.41
+## &quot;na.omit.data.frame&quot;      0.02     0.14       0.04      0.28
+## &quot;[.data.frame&quot;            0.02     0.14       0.02      0.14
+## &quot;tcrossprod&quot;              0.02     0.14       0.02      0.14
+## 
+## $by.total
+##                       total.time total.pct self.time self.pct
+## &quot;block_exec&quot;               14.50    100.00      0.00     0.00
+## &quot;call_block&quot;               14.50    100.00      0.00     0.00
+## &quot;doTryCatch&quot;               14.50    100.00      0.00     0.00
+## &quot;eval&quot;                     14.50    100.00      0.00     0.00
+## &quot;evaluate&quot;                 14.50    100.00      0.00     0.00
+## &quot;evaluate_call&quot;            14.50    100.00      0.00     0.00
+## &quot;force&quot;                    14.50    100.00      0.00     0.00
+## &quot;gam&quot;                      14.50    100.00      0.00     0.00
+## &quot;handle&quot;                   14.50    100.00      0.00     0.00
+## &quot;ifelse&quot;                   14.50    100.00      0.00     0.00
+## &quot;in_dir&quot;                   14.50    100.00      0.00     0.00
+## &quot;knit&quot;                     14.50    100.00      0.00     0.00
+## &quot;parse_page&quot;               14.50    100.00      0.00     0.00
+## &quot;process_file&quot;             14.50    100.00      0.00     0.00
+## &quot;process_group&quot;            14.50    100.00      0.00     0.00
+## &quot;process_group.block&quot;      14.50    100.00      0.00     0.00
+## &quot;slidify&quot;                  14.50    100.00      0.00     0.00
+## &quot;try&quot;                      14.50    100.00      0.00     0.00
+## &quot;tryCatch&quot;                 14.50    100.00      0.00     0.00
+## &quot;tryCatchList&quot;             14.50    100.00      0.00     0.00
+## &quot;tryCatchOne&quot;              14.50    100.00      0.00     0.00
+## &quot;withCallingHandlers&quot;      14.50    100.00      0.00     0.00
+## &quot;withVisible&quot;              14.50    100.00      0.00     0.00
+## &quot;estimate.gam&quot;             14.40     99.31      0.00     0.00
+## &quot;gam.fit&quot;                  14.32     98.76      0.02     0.14
+## &quot;.C&quot;                       14.08     97.10     14.08    97.10
+## &quot;magic&quot;                    14.08     97.10      0.00     0.00
+## &quot;magic.post.proc&quot;           0.22      1.52      0.00     0.00
+## &quot;%*%&quot;                       0.16      1.10      0.16     1.10
+## &quot;eigen&quot;                     0.08      0.55      0.08     0.55
+## &quot;totalPenaltySpace&quot;         0.08      0.55      0.00     0.00
+## &quot;quantile.default&quot;          0.06      0.41      0.02     0.14
+## &quot;apply&quot;                     0.06      0.41      0.00     0.00
+## &quot;FUN&quot;                       0.06      0.41      0.00     0.00
+## &quot;matrix&quot;                    0.06      0.41      0.00     0.00
+## &quot;variable.summary&quot;          0.06      0.41      0.00     0.00
+## &quot;crossprod&quot;                 0.04      0.28      0.04     0.28
+## &quot;sort.int&quot;                  0.04      0.28      0.04     0.28
+## &quot;na.omit.data.frame&quot;        0.04      0.28      0.02     0.14
+## &quot;.External2&quot;                0.04      0.28      0.00     0.00
+## &quot;model.frame&quot;               0.04      0.28      0.00     0.00
+## &quot;model.frame.default&quot;       0.04      0.28      0.00     0.00
+## &quot;na.omit&quot;                   0.04      0.28      0.00     0.00
+## &quot;sort&quot;                      0.04      0.28      0.00     0.00
+## &quot;sort.default&quot;              0.04      0.28      0.00     0.00
+## &quot;[.data.frame&quot;              0.02      0.14      0.02     0.14
+## &quot;tcrossprod&quot;                0.02      0.14      0.02     0.14
+## &quot;[&quot;                         0.02      0.14      0.00     0.00
+## 
+## $sample.interval
+## [1] 0.02
+## 
+## $sampling.time
+## [1] 14.5
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="smallerSpacing" id="slide-26" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Timing functions</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>For shorter runs, Rprof can be misleading and the <code>microbenchmark</code> package can be useful</li>
+</ul>
+
+<pre><code class="r">library(microbenchmark)
+x &lt;- numeric(10000)
+microbenchmark(unlist(lapply(x, function(y) y + 1)), for (i in seq_along(x)) x[i] &lt;- 1)
+</code></pre>
+
+<pre><code>## Unit: milliseconds
+##                                  expr      min       lq     mean   median       uq       max neval
+##  unlist(lapply(x, function(y) y + 1)) 4.511981 4.829220 5.218576 4.964749 5.241842  7.643321   100
+##     for (i in seq_along(x)) x[i] &lt;- 1 7.600157 7.687542 8.199546 7.955580 8.073601 13.383509   100
+</code></pre>
+
+<ul>
+<li>Need to consider garbage collection; see Radford Neal on <code>microbenchmark</code> <a href="http://radfordneal.wordpress.com/2014/02/02/inaccurate-results-from-microbenchmark/">issues</a></li>
+<li>See <code>tracemem</code>, <code>Rprofmem</code>, or <code>Rprof</code> with <code>memory.profiling</code> on for tracking memory usage</li>
+<li>Contributed packages <code>profr</code> and <code>proftools</code> provide additional anaylsis of profiling results</li>
+<li>See Chapter 3 of <a href="http://cran.r-project.org/doc/manuals/R-exts.html">Writing R Extensions manual</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="mediumSpacing" id="slide-27" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Creating a Package</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>To start a package use function <code>package.skeleton</code>
+
+<ul>
+<li>specify package name, directory to create pkg in and specify objects to include in pkg</li>
+</ul></li>
+<li>What to put in the package is specified using one of the following arguments
+
+<ul>
+<li><code>list</code> - character vector specifying object names</li>
+<li><code>environment</code> - an environment containing objects to add to the package</li>
+<li><code>code_files</code> -  character vector of path names to <code>.R</code> files (sourced to create pkg)</li>
+</ul></li>
+<li>The result is a directory named after your package containing:
+
+<ul>
+<li>Directory <code>R</code> containing source code (one file per object or a copy of <code>code_files</code>)</li>
+<li>Directory <code>man</code> containing outlines of documentation files for each object</li>
+<li>Directory <code>data</code> for data in .rda files</li>
+<li>NAMESPACE file - objects to be imported and exported</li>
+<li>DESCRIPTION file - basic info about the package</li>
+<li>Read-and-delete-me file - do as the name suggests</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="mediumSpacing" id="slide-28" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>The DESCRIPTION File - Example</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="text">x &lt;- read.dcf(file = system.file(&quot;DESCRIPTION&quot;, package = &quot;splines&quot;))
+writeLines(formatDL(names(as.data.frame(x)), as.character(x), style = &quot;list&quot;))
+</code></pre>
+
+<pre><code>## Package: splines
+## Version: 3.2.0
+## Priority: base
+## Imports: graphics, stats
+## Title: Regression Spline Functions and Classes
+## Author: Douglas M. Bates &lt;bates@stat.wisc.edu&gt; and William N. Venables &lt;Bill.Venables@csiro.au&gt;
+## Maintainer: R Core Team &lt;R-core@r-project.org&gt;
+## Description: Regression spline functions and classes.
+## License: Part of R 3.2.0
+## Built: R 3.2.0; x86_64-w64-mingw32; 2015-02-27 03:19:04 UTC; windows
+</code></pre>
+
+<p>These are <em>all</em> the <em>required</em> fields, plus <code>Built</code> which should not be specified by author</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="mediumSpacing" id="slide-29" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>The DESCRIPTION File - Other fields to consider</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><code>Collate</code>: used to specify the order the <code>R</code> code files should be processed in
+
+<ul>
+<li>If used, all files must be given; can be OS-specific, e.g. Collate.unix</li>
+</ul></li>
+<li><code>Authors@R</code>: for machine-readable author specification with the <a href="http://www.inside-r.org/r-doc/utils/person"><code>person class</code></a> class</li>
+<li><code>BugReports</code>: A URL to send bug reports to</li>
+<li><code>Imports</code>: List of packages whose namespaces you use (comma-separated, no quotes)</li>
+<li><code>Suggests</code>: Packages not necessarily needed, e.g. only used in tests or vignettes</li>
+<li><code>LinkingTo</code>: Package names, to make use of their <code>C</code> header files</li>
+<li><code>Enhances</code>: Packages your package enhances</li>
+<li><p><code>Depends</code>: Packages that must be <em>attached</em> to load your package</p>
+
+<ul>
+<li><code>Depends</code> is often incorrectly used instead of <code>Imports</code></li>
+</ul></li>
+<li><p>Can also version number requirements, including for <code>R</code> itself</p>
+
+<ul>
+<li>e.g. <code>Depends: R (&gt;= 3.0.0)</code></li>
+</ul></li>
+<li><p>Many others. Only fields that should not be used are <code>Built</code> and <code>Packaged</code></p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="mediumSpacing" id="slide-30" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Package Contents: NAMESPACE File</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r"># lists possible functions for NAMESPACE file
+names(parseNamespaceFile(&quot;utils&quot;, R.home(&quot;library&quot;)))
+</code></pre>
+
+<pre><code>##  [1] &quot;imports&quot;             &quot;exports&quot;             &quot;exportPatterns&quot;      &quot;importClasses&quot;      
+##  [5] &quot;importMethods&quot;       &quot;exportClasses&quot;       &quot;exportMethods&quot;       &quot;exportClassPatterns&quot;
+##  [9] &quot;dynlibs&quot;             &quot;nativeRoutines&quot;      &quot;S3methods&quot;
+</code></pre>
+
+<ul>
+<li>What should be exported? (user can use with <code>::</code>)
+
+<ul>
+<li><code>export(FnctnName)</code></li>
+<li><code>exportPattern(reg.ex)</code> - includes all files matching <code>reg.ex</code></li>
+</ul></li>
+<li>What needs to be imported from other packages?
+
+<ul>
+<li><code>import(pkg.name)</code>, <code>importFrom(pkg.name, fnctn.name)</code></li>
+<li>importing an entire package (using <code>imports</code>) should be avoided, if possible</li>
+</ul></li>
+<li>What compiled code needs to be included: <code>useDynLib(foo)</code></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-31" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Documentation</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><code>LaTeX</code>-like help files that get converted to <code>LaTeX</code>, <code>HTML</code>, and text when pkg built</li>
+<li>use function <code>prompt</code> to generate an outline (skeleton) for a new function for the pkg</li>
+<li>Should contains examples that are checked when package is built</li>
+<li>Chapter 2 of Writing R Extensions Manual</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="mediumSpacing" id="slide-32" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Package <code>roxygen2</code> - Documentation Made Easier</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With this package, you write documentation above function definition in source file</li>
+<li>Function <code>roxygenise()</code> parses this code into a documentation file</li>
+<li>Can also create NAMESPACE and DESCRIPTION files</li>
+<li>Each line starts #&#39;, then just replace LaTeX-like markup with <code>@</code></li>
+</ul>
+
+<p>For example:</p>
+
+<pre><code class="text">#&#39; This is the title of the documentation file
+#&#39;
+#&#39; This is the description of the function
+#&#39; @param x a character vector
+#&#39; @return string; x - processed some way
+#&#39; @details These are the details
+#&#39; @export
+#&#39; @importFrom tools toRd
+#&#39; @seealso \code{\link{table}}
+#&#39; @examples MyFun(c(&quot;hi&quot;, &quot;bye&quot;))
+MyFun &lt;- function(x = &quot;hi&quot;){
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-33" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Additional Subdirectories of the Package Directory</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><strong>tests</strong> - additional code for testing the package</li>
+<li>demo - Code for user can see executed with <code>demo</code> function</li>
+<li>inst - additional data, that is not <code>.rda</code> format</li>
+<li>src - for compiled code</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-34" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Additional Helpful tools</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><a href="http://www.rstudio.com/ide/docs/packages/overview"><code>RStudio</code></a>
+
+<ul>
+<li>Can add a special pane for checking, building, and installing packages to its GUI</li>
+</ul></li>
+<li>package <a href="http://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf"><code>testthat</code></a>
+
+<ul>
+<li>tools for making testing easier  (<strong>important</strong>)</li>
+</ul></li>
+<li>package <a href="https://github.com/hadley/devtools"><code>devtools</code></a>
+
+<ul>
+<li>Many useful functions when writing code for packages</li>
+</ul></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-35" style="background:;">
+  <hgroup>
+    <table style="width: 100%; background-color: white">
+     <tr>
+       <td style="width: 90%; background-color: white">
+         <h2><h2>Additional Information and Getting Help</h2></h2>
+       </td>
+       <td style="width: 10%; background-color: white">
+         <button class = "navButton" onclick="window.slidedeck.prevSlide()">&#8592;</button>
+         <button onclick="window.slidedeck.nextSlide()" class = "navButton">&#8594;</button>
+       </td>
+     </tr>
+   </table>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li><a href="http://cran.r-project.org/doc/manuals/R-exts.html">Writing R Extensions manual</a>
+
+<ul>
+<li><code>system2(&quot;open&quot;, file.path(R.home(&quot;doc&quot;), &quot;manual&quot;, &quot;R-exts.pdf&quot;))</code></li>
+<li>Other manuals: <code>list.files(R.home(&quot;doc/manual&quot;))</code></li>
+</ul></li>
+<li><a href="http://cran.r-project.org/doc/contrib/Leisch-CreatingPackages.pdf">Tutorial</a>  on creating packages by R Core Team member F. Leisch</li>
+<li><a href="http://portal.stats.ox.ac.uk/userdata/ruth/APTS2012/Rcourse10.pdf">Lecture notes</a> on how to create R packages by R Core member B. Ripley</li>
+<li><a href="http://cran.r-project.org/web/packages/policies.html">CRAN policies</a></li>
+<li>John Chambers - <a href="http://www.amazon.com/Software-Data-Analysis-Programming-Statistics/dp/0387759352/">Newest book</a>, <a href="http://www.amazon.com/Programming-Data-Language-John-Chambers/dp/0387985034/">the &quot;Green Book&quot; (S4)</a>, <a href="http://www.amazon.com/Statistical-Models-John-M-Chambers/dp/0534167659/">the &quot;White Book&quot; (S3)</a></li>
+<li>Hadley Wickham - <a href="http://adv-r.had.co.nz/">Advanced R Programming</a> and the companion package <a href="https://github.com/hadley/pryr"><code>pryr</code></a></li>
+<li>Search and ask questions on <a href="http://stackoverflow.com/">Stack Overflow</a> and the <a href="https://stat.ethz.ch/mailman/listinfo/r-help">R mailing lists</a></li>
+<li><code>R</code> functions <code>??</code> or <code>help.search</code>; <code>RSiteSearch</code> to use the R-project search engine</li>
+<li><a href="http://dirk.eddelbuettel.com/cranberries/cran/new/">CRANberries</a>  for new packages and updates</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Functions'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Extracting the Parts of a Closure'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Dot-dot-dot'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Partial matching of Argument Names'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Useful Functions for Working with Arguments'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Checking Arguments'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Handling Errors'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Working with Calls'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Working with Calls'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Functions are First Class Objects'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Scope, Environments, and Frames'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Environments and Function Calls'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Environments and Frames'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Lexical Scoping Example'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Working with Environments'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Working with Environments'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Package Environments'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Viewing Source code'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Viewing the sources'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Classes and Methods'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Defining <code>S3</code> Classes and Methods'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='S4 Classes'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Debugging'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='Debugging'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='Profiling'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Timing functions'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Creating a Package'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='The DESCRIPTION File - Example'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='The DESCRIPTION File - Other fields to consider'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Package Contents: NAMESPACE File'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Documentation'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Package <code>roxygen2</code> - Documentation Made Easier'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Additional Subdirectories of the Package Directory'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='Additional Helpful tools'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Additional Information and Getting Help'>
+         35
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="./assets/js/titleclicks.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

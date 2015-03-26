@@ -1,0 +1,39 @@
+<slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>{{ page.title }}</h1>
+    <h2>{{ page.subtitle }}</h2>
+    <h2>{{ page.talkdate }}</h2>
+    <div>
+    <p>{{ page.author }}<br/>{{ page.job1 }}<br/>{{ page.job2 }}<br/>{{ page.job3 }}</p>
+
+    {{# page.logoUni }}
+  <aside class = "titleImg" id = "UniLogo">
+    <img src="{{page.url.assets}}/img/{{{ page.logoUni }}}">
+    {{/ page.logoUni }}
+  </aside>
+    </div>
+  </hgroup>
+      <a id="fsshortcut" href="javascript:void(0)" class="tshortcut" target="_self">
+       Full screen
+      </a>
+      <a id="printshortcut" href="javascript:void(0)" class="tshortcut" target="_self">
+       Print
+      </a>
+      <a id="dlshortcut" href="http://mwmclean.github.io/iamcs1/#1" class="tshortcut" target="_self">
+     Source
+    </a>
+
+  {{# page.github }}
+    <a href="https://github.com/{{user}}/{{repo}}/zipball/gh-pages" class="example">
+     Download
+    </a>
+  {{/ page.github }}
+  <article><button class = "navButton" onclick="window.slidedeck.nextSlide()" id="titleButton">&#8594;</button></article>
+  {{# page.license }}
+  <footer class = 'license'>
+    <a href='http://creativecommons.org/licenses/{{{ page.license }}}/3.0/'>
+    <img width = '80px' src = 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/{{{ page.license }}}.png'>
+    </a>
+  </footer>
+  {{/ page.license }}
+</slide>

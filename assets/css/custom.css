@@ -1,0 +1,126 @@
+slide.smallerSpacing ul, slide.smallerSpacing li, slide.smallerSpacing ol {
+    padding: 0em;
+    margin-bottom: 0.1em !important;
+}
+
+slide.mediumSpacing ul, slide.mediumSpacing li, slide.mediumSpacing ol {
+    padding: 0em;
+    margin-bottom: 0.4em !important;
+}
+
+slide.mediumSpacing p {
+    margin-bottom: 0.5em !important;
+}
+
+.navButton{
+  font-size: 15px;
+  font-weight: 900;
+}
+
+#titleButton{
+  position: absolute;
+  top: 300px;
+  left: 1050px;
+  color: red;
+  display: block;
+}
+
+slide.smallerSpacing p {
+    margin-bottom: 0.5em !important;
+}
+
+slide.largerSpacing ul, slide.largerSpacing li, slide.largerSpacing ol {
+    padding: 0em;
+    margin-bottom: 0.7em !important;
+}
+
+slide em {
+  font-style: italic;
+}
+
+slide strong {
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-weight: 900;
+}
+
+slide.title-slide p{
+  float: left;
+}
+
+#UniLogo img{
+  width: 15%;
+  height: 15%;
+}
+
+#fsshortcut {
+  right: -3.2em;
+  top: 1.2em;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+#printshortcut {
+  left: -2.2em;
+  top: 1.2em;
+  -webkit-transform: rotate(-45deg);
+  /* transform: rotate(45deg); */
+  -moz-transform: rotate(-45deg);
+}
+
+#dlshortcut {
+  right: -3.2em;
+  bottom: 1em;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  /* transform: rotate(45deg); */
+}
+
+.tshortcut {
+  background-color: #121621;
+  -webkit-box-shadow: 0 0 0 1px #1d212e inset,0 0 2px 1px #fff inset,0 0 1em #888;
+  -moz-box-shadow: 0 0 0 1px #1d212e inset,0 0 2px 1px #fff inset,0 0 1em #888;
+  box-shadow: 0 0 0 1px #1d212e inset,0 0 2px 1px #fff inset,0 0 1em #888;
+  color: #7f7fff;
+  display: block;
+  padding: .6em 3.5em;
+  position: absolute;
+  font: bold .82em sans-serif;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: 1px -1px 8px rgba(0,0,0,0.60);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+#UniLogo {
+  padding: 50px;
+  margin-left: 10%;
+}
+
+/*
+
+.titleImg {
+  position:relative;
+}
+
+#UniLogo{
+  top: 100px;
+}
+
+#DepLogo{
+  float:right;
+  right: 65px;
+  top: 10px;
+}
+
+#DepLogo {
+  width: "70%";
+  height: "70%";
+}
+*/
+
+.title-slide {
+  background-color: #BDA0CB;
+}
