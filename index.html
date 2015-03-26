@@ -50,7 +50,7 @@
       <a id="printshortcut" href="javascript:void(0)" class="tshortcut" target="_self">
        Print
       </a>
-      <a id="dlshortcut" href="http://mwmclean.github.io/iamcs1/#1" class="tshortcut" target="_self">
+      <a id="dlshortcut" href="https://github.com/mwmclean/iamcs1" class="tshortcut" target="_self">
      Source
     </a>
 
@@ -1069,58 +1069,61 @@ summaryRprof(&quot;mcgvEx.out&quot;)
 
 <pre><code>## $by.self
 ##                      self.time self.pct total.time total.pct
-## &quot;.C&quot;                     14.08    97.10      14.08     97.10
-## &quot;%*%&quot;                     0.16     1.10       0.16      1.10
+## &quot;.C&quot;                     14.00    96.95      14.00     96.95
+## &quot;%*%&quot;                     0.14     0.97       0.14      0.97
 ## &quot;eigen&quot;                   0.08     0.55       0.08      0.55
 ## &quot;crossprod&quot;               0.04     0.28       0.04      0.28
-## &quot;sort.int&quot;                0.04     0.28       0.04      0.28
-## &quot;gam.fit&quot;                 0.02     0.14      14.32     98.76
-## &quot;quantile.default&quot;        0.02     0.14       0.06      0.41
+## &quot;tcrossprod&quot;              0.04     0.28       0.04      0.28
+## &quot;gam.fit&quot;                 0.02     0.14      14.26     98.75
+## &quot;FUN&quot;                     0.02     0.14       0.06      0.42
 ## &quot;na.omit.data.frame&quot;      0.02     0.14       0.04      0.28
+## &quot;sort.int&quot;                0.02     0.14       0.04      0.28
 ## &quot;[.data.frame&quot;            0.02     0.14       0.02      0.14
-## &quot;tcrossprod&quot;              0.02     0.14       0.02      0.14
+## &quot;double&quot;                  0.02     0.14       0.02      0.14
+## &quot;is.na&quot;                   0.02     0.14       0.02      0.14
 ## 
 ## $by.total
 ##                       total.time total.pct self.time self.pct
-## &quot;block_exec&quot;               14.50    100.00      0.00     0.00
-## &quot;call_block&quot;               14.50    100.00      0.00     0.00
-## &quot;doTryCatch&quot;               14.50    100.00      0.00     0.00
-## &quot;eval&quot;                     14.50    100.00      0.00     0.00
-## &quot;evaluate&quot;                 14.50    100.00      0.00     0.00
-## &quot;evaluate_call&quot;            14.50    100.00      0.00     0.00
-## &quot;force&quot;                    14.50    100.00      0.00     0.00
-## &quot;gam&quot;                      14.50    100.00      0.00     0.00
-## &quot;handle&quot;                   14.50    100.00      0.00     0.00
-## &quot;ifelse&quot;                   14.50    100.00      0.00     0.00
-## &quot;in_dir&quot;                   14.50    100.00      0.00     0.00
-## &quot;knit&quot;                     14.50    100.00      0.00     0.00
-## &quot;parse_page&quot;               14.50    100.00      0.00     0.00
-## &quot;process_file&quot;             14.50    100.00      0.00     0.00
-## &quot;process_group&quot;            14.50    100.00      0.00     0.00
-## &quot;process_group.block&quot;      14.50    100.00      0.00     0.00
-## &quot;slidify&quot;                  14.50    100.00      0.00     0.00
-## &quot;try&quot;                      14.50    100.00      0.00     0.00
-## &quot;tryCatch&quot;                 14.50    100.00      0.00     0.00
-## &quot;tryCatchList&quot;             14.50    100.00      0.00     0.00
-## &quot;tryCatchOne&quot;              14.50    100.00      0.00     0.00
-## &quot;withCallingHandlers&quot;      14.50    100.00      0.00     0.00
-## &quot;withVisible&quot;              14.50    100.00      0.00     0.00
-## &quot;estimate.gam&quot;             14.40     99.31      0.00     0.00
-## &quot;gam.fit&quot;                  14.32     98.76      0.02     0.14
-## &quot;.C&quot;                       14.08     97.10     14.08    97.10
-## &quot;magic&quot;                    14.08     97.10      0.00     0.00
+## &quot;block_exec&quot;               14.44    100.00      0.00     0.00
+## &quot;call_block&quot;               14.44    100.00      0.00     0.00
+## &quot;doTryCatch&quot;               14.44    100.00      0.00     0.00
+## &quot;eval&quot;                     14.44    100.00      0.00     0.00
+## &quot;evaluate&quot;                 14.44    100.00      0.00     0.00
+## &quot;evaluate_call&quot;            14.44    100.00      0.00     0.00
+## &quot;force&quot;                    14.44    100.00      0.00     0.00
+## &quot;gam&quot;                      14.44    100.00      0.00     0.00
+## &quot;handle&quot;                   14.44    100.00      0.00     0.00
+## &quot;ifelse&quot;                   14.44    100.00      0.00     0.00
+## &quot;in_dir&quot;                   14.44    100.00      0.00     0.00
+## &quot;knit&quot;                     14.44    100.00      0.00     0.00
+## &quot;parse_page&quot;               14.44    100.00      0.00     0.00
+## &quot;process_file&quot;             14.44    100.00      0.00     0.00
+## &quot;process_group&quot;            14.44    100.00      0.00     0.00
+## &quot;process_group.block&quot;      14.44    100.00      0.00     0.00
+## &quot;slidify&quot;                  14.44    100.00      0.00     0.00
+## &quot;try&quot;                      14.44    100.00      0.00     0.00
+## &quot;tryCatch&quot;                 14.44    100.00      0.00     0.00
+## &quot;tryCatchList&quot;             14.44    100.00      0.00     0.00
+## &quot;tryCatchOne&quot;              14.44    100.00      0.00     0.00
+## &quot;withCallingHandlers&quot;      14.44    100.00      0.00     0.00
+## &quot;withVisible&quot;              14.44    100.00      0.00     0.00
+## &quot;estimate.gam&quot;             14.34     99.31      0.00     0.00
+## &quot;gam.fit&quot;                  14.26     98.75      0.02     0.14
+## &quot;magic&quot;                    14.02     97.09      0.00     0.00
+## &quot;.C&quot;                       14.00     96.95     14.00    96.95
 ## &quot;magic.post.proc&quot;           0.22      1.52      0.00     0.00
-## &quot;%*%&quot;                       0.16      1.10      0.16     1.10
+## &quot;%*%&quot;                       0.14      0.97      0.14     0.97
 ## &quot;eigen&quot;                     0.08      0.55      0.08     0.55
 ## &quot;totalPenaltySpace&quot;         0.08      0.55      0.00     0.00
-## &quot;quantile.default&quot;          0.06      0.41      0.02     0.14
-## &quot;apply&quot;                     0.06      0.41      0.00     0.00
-## &quot;FUN&quot;                       0.06      0.41      0.00     0.00
-## &quot;matrix&quot;                    0.06      0.41      0.00     0.00
-## &quot;variable.summary&quot;          0.06      0.41      0.00     0.00
+## &quot;FUN&quot;                       0.06      0.42      0.02     0.14
+## &quot;apply&quot;                     0.06      0.42      0.00     0.00
+## &quot;matrix&quot;                    0.06      0.42      0.00     0.00
+## &quot;quantile.default&quot;          0.06      0.42      0.00     0.00
+## &quot;variable.summary&quot;          0.06      0.42      0.00     0.00
 ## &quot;crossprod&quot;                 0.04      0.28      0.04     0.28
-## &quot;sort.int&quot;                  0.04      0.28      0.04     0.28
+## &quot;tcrossprod&quot;                0.04      0.28      0.04     0.28
 ## &quot;na.omit.data.frame&quot;        0.04      0.28      0.02     0.14
+## &quot;sort.int&quot;                  0.04      0.28      0.02     0.14
 ## &quot;.External2&quot;                0.04      0.28      0.00     0.00
 ## &quot;model.frame&quot;               0.04      0.28      0.00     0.00
 ## &quot;model.frame.default&quot;       0.04      0.28      0.00     0.00
@@ -1128,14 +1131,20 @@ summaryRprof(&quot;mcgvEx.out&quot;)
 ## &quot;sort&quot;                      0.04      0.28      0.00     0.00
 ## &quot;sort.default&quot;              0.04      0.28      0.00     0.00
 ## &quot;[.data.frame&quot;              0.02      0.14      0.02     0.14
-## &quot;tcrossprod&quot;                0.02      0.14      0.02     0.14
+## &quot;double&quot;                    0.02      0.14      0.02     0.14
+## &quot;is.na&quot;                     0.02      0.14      0.02     0.14
 ## &quot;[&quot;                         0.02      0.14      0.00     0.00
+## &quot;format_perc&quot;               0.02      0.14      0.00     0.00
+## &quot;formatC&quot;                   0.02      0.14      0.00     0.00
+## &quot;paste0&quot;                    0.02      0.14      0.00     0.00
+## &quot;pmax&quot;                      0.02      0.14      0.00     0.00
+## &quot;vapply&quot;                    0.02      0.14      0.00     0.00
 ## 
 ## $sample.interval
 ## [1] 0.02
 ## 
 ## $sampling.time
-## [1] 14.5
+## [1] 14.44
 </code></pre>
 
   </article>
